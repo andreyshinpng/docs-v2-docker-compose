@@ -1,0 +1,25 @@
+version: '3'
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./hosts:/etc/nginx/conf.d
+      - ./www:/var/www
+      - ./logs/nginx:/var/log/nginx
+    links:
+      - php
+  php:
+    build: ./images/php
+    links:
+      - mariadb
+    volumes:
+      - ./www/:/var/www
+  mariadb:
+    image: mariadb
+    restart: always
+    ports: 
+      - "3306:3306"
+    environment:
+      MARIADB_ROOT_PASSWORD: lol123
